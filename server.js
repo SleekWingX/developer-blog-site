@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { sequelize } = require('./config/config');
+require('dotenv').config();
 const User = require('./models/User'); // Ensure User model is correctly used
 
 const app = express();
@@ -49,6 +50,10 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
+
+sequelize.authenticate()
+    .then(() => console.log('Database connected.'))
+    .catch(err => console.log('Error connecting to database:', err));
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

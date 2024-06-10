@@ -1,6 +1,9 @@
-const User = require('./User');
-const Post = require('./Post');
-const Comment = require('./Comment');
+const Sequelize = require('sequelize');
+const { sequelize } = require('../config/config');
+
+const User = require('./User')(sequelize, Sequelize.DataTypes);
+const Post = require('./Post')(sequelize, Sequelize.DataTypes);
+const Comment = require('./Comment')(sequelize, Sequelize.DataTypes);
 
 // Define model associations
 User.hasMany(Post, { foreignKey: 'userId' });
@@ -12,4 +15,10 @@ Comment.belongsTo(User, { foreignKey: 'userId' });
 Post.hasMany(Comment, { foreignKey: 'postId' });
 Comment.belongsTo(Post, { foreignKey: 'postId' });
 
-module.exports = { User, Post, Comment };
+// Export models and sequelize instance
+module.exports = {
+    sequelize,
+    User,
+    Post,
+    Comment
+};
