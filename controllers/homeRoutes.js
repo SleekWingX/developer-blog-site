@@ -24,6 +24,24 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Route to get user's dashboard with their posts
+router.get('/dashboard', withAuth, async (req, res) => {
+    try {
+        const userPosts = await Post.findAll({
+            where: { userId: req.session.userId },
+            include: [User]
+        });
+        const posts = userPosts.map(post => post.get({ plain: true }));
+
+        res.render('dashboard', {
+            posts,
+            loggedIn: req.session.loggedIn
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // Route to get a single post and its comments
 router.get('/post/:id', async (req, res) => {
     try {

@@ -1,0 +1,21 @@
+{{!< layouts/main}}
+<article>
+    <h1>{{post.title}}</h1>
+    <p>{{post.content}}</p>
+    {{#each post.comments}}
+    <div class="comment">
+        <p>{{this.content}} - <b>{{this.User.username}}</b> on {{this.createdAt}}</p>
+    </div>
+    {{/each}}
+</article>
+{{#if loggedIn}}
+<section>
+    <h2>Leave a comment:</h2>
+    <form action="/api/comments" method="POST">
+        <input type="hidden" name="postId" value="{{post.id}}">
+        <textarea name="content" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+</section>
+{{/if}}
+

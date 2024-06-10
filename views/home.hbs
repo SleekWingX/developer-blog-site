@@ -1,14 +1,8 @@
-{{#if loggedIn}}
-    <p>Welcome, {{username}}!</p>
-    <a href="/dashboard">Go to Dashboard</a>
-{{else}}
-    <a href="/login">Login</a>
-    <a href="/signup">Sign Up</a>
-{{/if}}
-{{#each posts as |post|}}
-    <div>
-        <h2>{{post.title}}</h2>
-        <p>{{post.content}}</p>
-        <a href="/post/{{post.id}}">Read more</a>
-    </div>
+{{!< layouts/main}}
+{{#each posts}}
+<article>
+    <h2>{{this.title}}</h2>
+    <p>{{this.content}}</p>
+    <a href="/post/{{this.id}}">Read more...</a>
+</article>
 {{/each}}
