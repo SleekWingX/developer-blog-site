@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
+    <title>{{{yield "title"}}}</title> <!-- Change to handle inline title definitions -->
     <link rel="stylesheet" href="/css/styles.css">
     {{#if customCss}}<link rel="stylesheet" href="{{customCss}}">{{/if}}
 </head>
@@ -11,9 +11,9 @@
     <header>
         <nav>
             {{#if loggedIn}}
-                <p>Welcome, {{username}}! <a href="/dashboard">Dashboard</a> | <a href="/logout">Logout</a></p>
+                <p>Welcome, {{username}}! <a href="/dashboard">Dashboard</a> | <form action="/api/users/logout" method="POST" style="display: inline;"><button type="submit">Logout</button></form></p>
             {{else}}
-                <a href="/login">Login</a> | <a href="/signup">Sign Up</a>
+                <a href="/api/users/login">Login</a> | <a href="/api/users/signup">Sign Up</a>
             {{/if}}
         </nav>
     </header>
@@ -25,4 +25,3 @@
     </footer>
 </body>
 </html>
-

@@ -15,13 +15,23 @@ Post.init({
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: 'user_id'
+        field: 'user_id'  // Maps to the 'user_id' column in the database
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        field: 'created_at'  // Maps to the 'created_at' column in the database
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        field: 'updated_at'  // Maps to the 'updated_at' column in the database
     }
 }, {
     sequelize,
     modelName: 'Post',
     tableName: 'posts',
-    timestamps: true // Enables createdAt and updatedAt
+    timestamps: true // Enables automatic handling of these columns
 });
 
 module.exports = Post;

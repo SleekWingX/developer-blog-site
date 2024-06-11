@@ -1,7 +1,17 @@
 const router = require('express').Router();
 const User = require('../../models/User');
 
-// User signup route
+// GET login page
+router.get('/login', (req, res) => {
+    res.render('login'); // Ensure you have a 'login.hbs' file in your views directory
+});
+
+// GET signup page
+router.get('/signup', (req, res) => {
+    res.render('signup'); // Ensure you have a 'signup.hbs' file in your views directory
+});
+
+// POST signup - create a new user
 router.post('/signup', async (req, res) => {
     try {
         const newUser = await User.create({
@@ -20,7 +30,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-// User login route
+// POST login - authenticate a user
 router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({
@@ -53,7 +63,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// User logout route
+// POST logout - log out a user
 router.post('/logout', (req, res) => {
     if (req.session.loggedIn) {
         req.session.destroy(() => {
