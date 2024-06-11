@@ -1,9 +1,8 @@
-const Sequelize = require('sequelize');
 const { sequelize } = require('../config/config');
 
-const User = require('./User')(sequelize, Sequelize.DataTypes);
-const Post = require('./Post')(sequelize, Sequelize.DataTypes);
-const Comment = require('./Comment')(sequelize, Sequelize.DataTypes);
+const User = require('./User');
+const Post = require('./Post');
+const Comment = require('./Comment');
 
 // Define model associations
 User.hasMany(Post, { foreignKey: 'userId' });

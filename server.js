@@ -3,13 +3,13 @@ const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { sequelize } = require('./config/config');
 require('dotenv').config();
-const User = require('./models/User'); // Ensure User model is correctly used
+const { engine } = require('express-handlebars');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Set up Handlebars.js as your templating engine
-app.engine('hbs', require('express-handlebars')({
+app.engine('hbs', engine({
     defaultLayout: 'main',
     extname: '.hbs'
 }));
@@ -20,7 +20,7 @@ app.use(express.static('public'));
 
 // Set up session with Sequelize store
 app.use(session({
-    secret: 'super secret',
+    secret: process.env.SESSION_SECRET,
     store: new SequelizeStore({
         db: sequelize,
     }),
