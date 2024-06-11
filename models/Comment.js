@@ -10,7 +10,8 @@ Comment.init({
     },
     userId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        field: 'user_id'
     },
     postId: {
         type: DataTypes.INTEGER,
