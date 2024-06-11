@@ -14,14 +14,12 @@ Post.init({
     },
     userId: {
         type: DataTypes.INTEGER,
-        references: {
-            model: 'User',
-            key: 'id'
-        }
+        allowNull: false
     }
 }, {
     sequelize,
     modelName: 'Post',
+    tableName: 'posts',
     timestamps: true // Enables createdAt and updatedAt
 });
 
