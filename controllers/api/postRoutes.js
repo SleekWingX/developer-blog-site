@@ -1,6 +1,11 @@
 const router = require('express').Router();
-const { Post } = require('../../models');
+const { Post, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
+
+// Route to get the form for creating a new post
+router.get('/new', withAuth, (req, res) => {
+    res.render('createPost', { title: 'Create New Post' }); // Assumes you have a createPost.hbs view
+});
 
 // Route to create a new post
 router.post('/', withAuth, async (req, res) => {

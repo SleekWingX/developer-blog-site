@@ -22,14 +22,17 @@ router.post('/signup', async (req, res) => {
             req.session.userId = newUser.id;
             req.session.username = newUser.username;
             req.session.loggedIn = true;
-
-            res.status(200).json(newUser);
+            // Redirect to the dashboard page after successful signup
+            res.redirect('/dashboard');
         });
     } catch (error) {
-        res.status(500).json(error);
+        console.error('Signup error:', error);
+        // If there's an error, you might want to handle it differently
+        res.status(500).render('signup', { message: 'Failed to create an account, please try again.', title: 'Sign Up' });
     }
 });
 
+// POST login - authenticate a user
 // POST login - authenticate a user
 router.post('/login', async (req, res) => {
     try {
@@ -40,15 +43,13 @@ router.post('/login', async (req, res) => {
         });
 
         if (!user) {
-            res.status(400).json({ message: 'No user account found!' });
-            return;
+            return res.status(400).render('login', { message: 'No user account found!', title: 'Login' });
         }
 
         const validPassword = user.checkPassword(req.body.password);
 
         if (!validPassword) {
-            res.status(400).json({ message: 'Incorrect password!' });
-            return;
+            return res.status(400).render('login', { message: 'Incorrect password!', title: 'Login' });
         }
 
         req.session.save(() => {
@@ -56,12 +57,14 @@ router.post('/login', async (req, res) => {
             req.session.username = user.username;
             req.session.loggedIn = true;
 
-            res.json({ user: user, message: 'You are now logged in!' });
+            res.redirect('/dashboard');  // Redirect to dashboard
         });
     } catch (error) {
-        res.status(500).json(error);
+        console.error('Login error:', error);
+        res.status(500).render('login', { message: 'Unexpected error occurred. Please try again.', title: 'Login' });
     }
 });
+
 
 // POST logout - log out a user
 router.post('/logout', (req, res) => {

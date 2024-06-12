@@ -14,11 +14,30 @@ User.init({
     username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        field: 'username',
+        validate: {
+            isAlphanumeric: true, // usernames can only contain letters and numbers
+            len: [4,30] // usernames must be between 4 and 30 characters long
+        }
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        field: 'password',
+        validate: {
+            len: [8,100] // passwords must be between 8 and 100 characters long
+        }
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        field: 'created_at'
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        field: 'updated_at'
     }
 }, {
     sequelize,
