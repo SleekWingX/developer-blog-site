@@ -14,7 +14,8 @@ router.post('/', withAuth, async (req, res) => {
             ...req.body,
             userId: req.session.userId
         });
-        res.status(200).json(newPost);
+        // Redirect to the dashboard after post creation
+        res.redirect('/dashboard');
     } catch (err) {
         res.status(400).json(err);
     }

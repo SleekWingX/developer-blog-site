@@ -3,7 +3,7 @@
 
 <main>
     <h1>Create a New Post</h1>
-    <form action="/api/posts" method="POST">
+    <form id="postForm" action="/api/posts" method="POST">
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
 
@@ -13,3 +13,14 @@
         <button type="submit">Submit Post</button>
     </form>
 </main>
+
+<script>
+document.getElementById('postForm').addEventListener('submit', function(event) {
+    const title = document.getElementById('title').value.trim();
+    const content = document.getElementById('content').value.trim();
+    if (!title || !content) {
+        event.preventDefault(); // Stop form submission
+        alert('Both title and content are required to create a post.');
+    }
+});
+</script>
