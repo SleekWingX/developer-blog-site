@@ -3,12 +3,12 @@ const User = require('../../models/User');
 
 // GET login page
 router.get('/login', (req, res) => {
-    res.render('login'); // Ensure you have a 'login.hbs' file in your views directory
+    res.render('login', { title: 'Login' });  // Passing title for consistency
 });
 
 // GET signup page
 router.get('/signup', (req, res) => {
-    res.render('signup'); // Ensure you have a 'signup.hbs' file in your views directory
+    res.render('signup', { title: 'Sign Up' });  // Passing title for consistency
 });
 
 // POST signup - create a new user
