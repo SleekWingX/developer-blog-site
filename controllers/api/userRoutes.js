@@ -33,7 +33,6 @@ router.post('/signup', async (req, res) => {
 });
 
 // POST login - authenticate a user
-// POST login - authenticate a user
 router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({
@@ -65,12 +64,11 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
 // POST logout - log out a user
 router.post('/logout', (req, res) => {
     if (req.session.loggedIn) {
         req.session.destroy(() => {
-            res.status(204).end();
+            res.redirect('/');  // Redirect to the home page after logout
         });
     } else {
         res.status(404).end();

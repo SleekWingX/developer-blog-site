@@ -7,6 +7,36 @@ router.get('/new', withAuth, (req, res) => {
     res.render('createPost', { title: 'Create New Post' }); // Assumes you have a createPost.hbs view
 });
 
+// Route to get the form to edit an existing post
+router.get('/edit/:id', withAuth, async (req, res) => {
+    try {
+        const postData = await Post.findByPk(req.params.id, {
+            include: [
+                {
+                    model: Comment,
+                    include: {
+                        model: User
+                    }
+                }
+            ]
+        });
+
+        if (!postData) {
+            res.status(404).json({ message: 'No post found with this id' });
+            return;
+        }
+
+        const post = postData.get({ plain: true });
+
+        res.render('editPost', {
+            post,
+            loggedIn: req.session.loggedIn
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 // Route to create a new post
 router.post('/', withAuth, async (req, res) => {
     try {
@@ -36,7 +66,7 @@ router.post('/comments', withAuth, async (req, res) => {
 });
 
 // Route to delete a comment
-router.delete('/:id', withAuth, async (req, res) => {
+router.delete('/comments/:id', withAuth, async (req, res) => {
     try {
         const result = await Comment.destroy({
             where: {
@@ -75,8 +105,8 @@ router.put('/:id', withAuth, async (req, res) => {
     }
 });
 
-// Route to delete a post
-router.delete('/:id', withAuth, async (req, res) => {
+// Route to delete a post via POST
+router.post('/delete/:id', withAuth, async (req, res) => {
     try {
         const postData = await Post.destroy({
             where: {
@@ -90,7 +120,7 @@ router.delete('/:id', withAuth, async (req, res) => {
             return;
         }
 
-        res.status(200).json(postData);
+        res.redirect('/dashboard'); // Redirect to the dashboard after successful deletion
     } catch (err) {
         res.status(500).json(err);
     }

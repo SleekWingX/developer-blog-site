@@ -5,6 +5,7 @@ const { sequelize } = require('./config/config');
 const SessionModel = require('./models/session')(sequelize);
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { engine } = require('express-handlebars');
+const methodOverride = require('method-override');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -38,6 +39,10 @@ app.use(session({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Use method-override to allow form submissions with PUT and DELETE methods
+app.use(methodOverride('_method')); // Setup method override for PUT and DELETE support from forms
+
 
 // Import routes
 const homeRoutes = require('./controllers/homeRoutes');
