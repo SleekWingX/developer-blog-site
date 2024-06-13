@@ -1,18 +1,10 @@
 const router = require('express').Router();
 const User = require('../../models/User');
 
-// GET login page
-router.get('/login', (req, res) => {
-    res.render('login', { title: 'Login' });  // Passing title for consistency
-});
-
-// GET signup page
-router.get('/signup', (req, res) => {
-    res.render('signup', { title: 'Sign Up' });  // Passing title for consistency
-});
+//
 
 // POST signup - create a new user
-router.post('/signup', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const newUser = await User.create({
             username: req.body.username,
@@ -22,8 +14,8 @@ router.post('/signup', async (req, res) => {
             req.session.userId = newUser.id;
             req.session.username = newUser.username;
             req.session.loggedIn = true;
-            // Redirect to the dashboard page after successful signup
-            res.redirect('/dashboard');
+
+            res.json(newUser);  ;
         });
     } catch (error) {
         console.error('Signup error:', error);
@@ -42,13 +34,13 @@ router.post('/login', async (req, res) => {
         });
 
         if (!user) {
-            return res.status(400).render('login', { message: 'No user account found!', title: 'Login' });
+            return res.status(400).json('error')
         }
 
         const validPassword = user.checkPassword(req.body.password);
 
         if (!validPassword) {
-            return res.status(400).render('login', { message: 'Incorrect password!', title: 'Login' });
+            return res.status(400).json('error')
         }
 
         req.session.save(() => {
@@ -56,11 +48,11 @@ router.post('/login', async (req, res) => {
             req.session.username = user.username;
             req.session.loggedIn = true;
 
-            res.redirect('/dashboard');  // Redirect to dashboard
+            res.json(user);  
         });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).render('login', { message: 'Unexpected error occurred. Please try again.', title: 'Login' });
+        
     }
 });
 

@@ -11,9 +11,9 @@
     <header>
         <nav>
             {{#if loggedIn}}
-                <p>Welcome, {{username}}! <a href="/api/posts/new">Create New Post</a> | <a href="/dashboard">Dashboard</a> | <form action="/api/users/logout" method="POST" style="display: inline;"><button type="submit">Logout</button></form></p>
+                <p>Welcome, {{username}}! <a href="/new">Create New Post</a> | <a href="/dashboard">Dashboard</a> | <form action="/api/users/logout" method="POST" style="display: inline;"><button type="submit">Logout</button></form></p>
             {{else}}
-                <a href="/api/users/login">Login</a> | <a href="/api/users/signup">Sign Up</a>
+                <a href="/login">Login</a> | <a href="/signup">Sign Up</a>
             {{/if}}
         </nav>
     </header>

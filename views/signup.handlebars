@@ -2,7 +2,7 @@
 {{#*inline "title"}}Sign Up{{/inline}}
 
 <main>
-    <form action="/api/users/signup" method="POST">
+    <form id="signupForm">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
 
@@ -12,3 +12,5 @@
         <button type="submit">Sign Up</button>
     </form>
 </main>
+
+<script src="/js/signup.js"></script>

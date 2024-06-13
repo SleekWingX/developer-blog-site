@@ -1,81 +1,46 @@
-require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const session = require('express-session');
-const { sequelize } = require('./config/config');
-const SessionModel = require('./models/session')(sequelize);
+const exphbs = require('express-handlebars');
+const routes = require('./controllers');
+// const helpers = require('./utils/helpers');
+
+const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const { engine } = require('express-handlebars');
-const methodOverride = require('method-override');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configure Sequelize store for sessions
-const myStore = new SequelizeStore({
-    db: sequelize,
-    model: SessionModel  // Use the SessionModel you defined and imported
-});
+// Set up Handlebars.js engine with custom helpers
+const hbs = exphbs.create({  });
 
-// Set up Handlebars.js as your templating engine
-app.engine('hbs', engine({
-    defaultLayout: 'main',
-    extname: '.hbs'
-}));
-app.set('view engine', 'hbs');
+const sess = {
+  secret: 'Super secret secret',
+  cookie: {
+    maxAge: 300000,
+    httpOnly: true,
+    secure: false,
+    sameSite: 'strict',
+  },
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
+};
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+app.use(session(sess));
 
-// Set up session with Sequelize store
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    store: myStore,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 30 * 60 * 1000  // 30 minutes
-    }
-}));
+// Inform Express.js on which template engine to use
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Use method-override to allow form submissions with PUT and DELETE methods
-app.use(methodOverride('_method')); // Setup method override for PUT and DELETE support from forms
+app.use(routes);
 
-
-// Import routes
-const homeRoutes = require('./controllers/homeRoutes');
-const userRoutes = require('./controllers/api/userRoutes');
-const postRoutes = require('./controllers/api/postRoutes');
-
-// Use routes
-app.use('/', homeRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/posts', postRoutes);
-
-// Basic error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => console.log('Now listening'));
 });
-
-// Function to initialize the server
-async function startServer() {
-    try {
-        await sequelize.authenticate();
-        console.log('Database connected.');
-
-        // Ensure the session model is properly initialized before syncing
-        await sequelize.sync();  // Sync all models
-        console.log("All models were synchronized successfully.");
-
-        app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
-        });
-    } catch (err) {
-        console.error('Failed to start the server:', err);
-    }
-}
-
-startServer();

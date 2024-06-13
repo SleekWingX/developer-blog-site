@@ -1,0 +1,16 @@
+{{!< layouts/main}}
+<h1>Your Dashboard</h1>
+<a href="/dashboard/new">Create New Post</a> 
+{{#each posts}}
+<div class="post">
+    <h2>{{this.title}}</h2>
+    <p>{{this.content}}</p>
+    <a href="/dashboard/edit/{{this.id}}"><button >Edit</button></a>
+    {{!-- <form action="/dashboard/edit/{{this.id}}" method="GET">
+    </form>
+    <form action="/dashboard/delete/{{this.id}}" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Delete</button>
+    </form> --}}
+</div>
+{{/each}}

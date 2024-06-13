@@ -2,7 +2,7 @@
 {{#*inline "title"}}Login{{/inline}}
 
 <main>
-    <form action="/api/users/login" method="POST">
+    <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
 
@@ -12,3 +12,5 @@
         <button type="submit">Login</button>
     </form>
 </main>
+
+<script src="/js/login.js"></script>

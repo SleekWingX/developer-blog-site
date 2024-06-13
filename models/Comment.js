@@ -1,27 +1,29 @@
-const { Model, DataTypes } = require('sequelize');
-const { sequelize } = require('../config/config');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
 class Comment extends Model {}
 
-Comment.init({
+Comment.init(
+  {
     content: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        field: 'user_id'
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: "user_id",
     },
     postId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-}, {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
     sequelize,
-    modelName: 'Comment',
-    tableName: 'comments',
-    timestamps: true // Enables createdAt and updatedAt
-});
+    modelName: "Comment",
+    timestamps: true, // Enables createdAt and updatedAt
+  }
+);
 
 module.exports = Comment;
