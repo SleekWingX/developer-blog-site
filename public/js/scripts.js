@@ -54,8 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault();
             const formData = new FormData(commentForm);
             const content = formData.get('content');
-            const postId = formData.get('postId');
-            postData('/api/comments', { content, postId })
+            const post_id = formData.get('post_id');
+            postData('/api/comments', { content, post_id })
                 .then(data => {
                     console.log(data);
                     // Handle comment success (e.g., clear form, display the new comment)

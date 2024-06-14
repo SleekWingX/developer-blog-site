@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
         res.render('home', {
             posts,
-            loggedIn: req.session.loggedIn
+            logged_in: req.session.logged_in
         });
     } catch (err) {
         res.status(500).json(err);
@@ -48,7 +48,7 @@ router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
 
         res.render('editPost', {
             post,
-            loggedIn: req.session.loggedIn
+            logged_in: req.session.logged_in
         });
     } catch (err) {
         res.status(500).json(err);
@@ -59,14 +59,14 @@ router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
 router.get('/dashboard', withAuth, async (req, res) => {
     try {
         const userPosts = await Post.findAll({
-            where: { userId: req.session.userId },
+            where: { user_id: req.session.user_id },
             include: [User]
         });
         const posts = userPosts.map(post => post.get({ plain: true }));
 
         res.render('dashboard', {
             posts,
-            loggedIn: req.session.loggedIn
+            logged_in: req.session.logged_in
         });
     } catch (err) {
         res.status(500).json(err);
@@ -97,7 +97,7 @@ router.get('/post/:id', async (req, res) => {
 
             res.render('post', {
                 post,
-                loggedIn: req.session.loggedIn
+                logged_in: req.session.logged_in
             });
         } else {
             res.status(404).end();
@@ -113,6 +113,11 @@ router.get('/dashboard/new', withAuth, (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+    // if user is logged in re-route them to the dashboard
+    if (req.session.logged_in) {
+        res.redirect('/dashboard');
+        return;
+      }
     res.render('login'); // Assumes you have a createPost.hbs view
 });
 

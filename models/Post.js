@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../config/connection");
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection');
 
 class Post extends Model {}
 
@@ -13,26 +13,30 @@ Post.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    userId: {
+    user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      field: "user_id", // Maps to the 'user_id' column in the database
+      references: {
+        model: 'user',
+        key: 'id',
+      },
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: "created_at", // Maps to the 'created_at' column in the database
+      defaultValue: DataTypes.NOW
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      field: "updated_at", // Maps to the 'updated_at' column in the database
+      defaultValue: DataTypes.NOW
     },
   },
   {
     sequelize,
-    modelName: "Post",
-    timestamps: true, // Enables automatic handling of these columns
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'Post',
   }
 );
 

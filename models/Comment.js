@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require("sequelize");
-const sequelize = require("../config/connection");
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection');
 
 class Comment extends Model {}
 
@@ -9,20 +9,21 @@ Comment.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    userId: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field: "user_id",
     },
-    postId: {
+    post_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: "Comment",
-    timestamps: true, // Enables createdAt and updatedAt
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'Comment',
   }
 );
 
