@@ -15,7 +15,7 @@ router.post("/", withAuth, async (req, res) => {
   }
 });
 
-/* // Route to update a post
+// Route to update a post
 router.put("/:id", withAuth, async (req, res) => {
   try {
     const updatedPost = await Post.update(req.body, {
@@ -33,7 +33,7 @@ router.put("/:id", withAuth, async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-}); */
+});
 
 // Route to delete a post via POST
 router.delete("/:id", withAuth, async (req, res) => {

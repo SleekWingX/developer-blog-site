@@ -3,7 +3,7 @@ document.getElementById('postForm').addEventListener('submit', async function(ev
 const title = document.getElementById('title').value.trim();
 const content = document.getElementById('content').value.trim();
 if (title && content) {
-     await fetch('/api/posts/', {
+    const response = await fetch('/api/posts/', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -13,6 +13,10 @@ if (title && content) {
         })
     })
 
-    document.location.replace('/dashboard')
+    if (response.ok) {
+        document.location.replace('/dasboard');
+      } else {
+        alert('Failed to create project');
+      }
 }
 });

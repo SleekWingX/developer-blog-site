@@ -3,16 +3,19 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 const username = document.getElementById('username').value.trim();
 const password = document.getElementById('password').value.trim();
 
-     await fetch('/api/users/login', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json'
-        } ,
-        body: JSON.stringify({
-            username, password
-        })
-    })
+if (username && password) {
+    // Send a POST request to the API endpoint
+    const response = await fetch('/api/users/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    document.location.replace('/dashboard')
-
+    if (response.ok) {
+      // If successful, redirect the browser to the dashboard page
+      document.location.replace('/dashboard');
+    } else {
+      alert(response.statusText);
+    }
+  }
 });

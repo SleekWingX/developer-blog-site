@@ -3,16 +3,17 @@ document.getElementById('signupForm').addEventListener('submit', async function(
 const username = document.getElementById('username').value.trim();
 const password = document.getElementById('password').value.trim();
 
-     await fetch('/api/users/', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json'
-        } ,
-        body: JSON.stringify({
-            username, password
-        })
-    })
+if (username && password) {
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    document.location.replace('/dashboard')
-
+    if (response.ok) {
+      document.location.replace('/dasboard');
+    } else {
+      alert(response.statusText);
+    }
+  }
 });
