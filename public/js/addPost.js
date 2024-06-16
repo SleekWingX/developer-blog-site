@@ -14,7 +14,7 @@ if (title && content) {
     })
 
     if (response.ok) {
-        document.location.replace('/dasboard');
+        document.location.replace('/dashboard');
       } else {
         alert('Failed to create project');
       }

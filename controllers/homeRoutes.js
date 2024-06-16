@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
             include: [
                 {
                     model: User,
-                    attributes: ['username']
                 }
             ]
         });
@@ -25,7 +24,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route to get the form to edit an existing post
+/* // Route to get the form to edit an existing post
 router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
     try {
         const postData = await Post.findByPk(req.params.id, {
@@ -48,15 +47,17 @@ router.get('/dashboard/edit/:id', withAuth, async (req, res) => {
 
         res.render('editPost', {
             post,
-            logged_in: req.session.logged_in
+            logged_in: req.session.logged_in,
+            username:req.session.username
         });
     } catch (err) {
         res.status(500).json(err);
     }
 });
-
+ */
 // Route to get user's dashboard with their posts
 router.get('/dashboard', withAuth, async (req, res) => {
+    console.log("Dashboard get")
     try {
         const userPosts = await Post.findAll({
             where: { user_id: req.session.user_id },
@@ -66,9 +67,11 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
         res.render('dashboard', {
             posts,
-            logged_in: req.session.logged_in
+            logged_in: req.session.logged_in,
+            username:req.session.username
         });
     } catch (err) {
+        console.log("Err",err)
         res.status(500).json(err);
     }
 });
@@ -80,13 +83,11 @@ router.get('/post/:id', async (req, res) => {
             include: [
                 {
                     model: User,
-                    attributes: ['username']
                 },
                 {
                     model: Comment,
                     include: {
                         model: User,
-                        attributes: ['username']
                     }
                 }
             ]
